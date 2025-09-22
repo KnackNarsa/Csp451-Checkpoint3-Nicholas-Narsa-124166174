@@ -13,46 +13,24 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      # --- Diagnostics so we can SEE what the runner sees ---
-      - name: Debug: show workspace & lockfiles
-        run: |
-          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
-          pwd
-          ls -la
-          echo "Found lock files:"
-          find . -maxdepth 2 -type f \( -name package.json -o -name package-lock.json -o -name npm-shrinkwrap.json -o -name yarn.lock \) -print
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          # Be explicit + robust. If root has it, the first line is enough;
-          # the globs cover edge cases.
-          cache-dependency-path: |
-            package-lock.json
-            **/package-lock.json
-            **/npm-shrinkwrap.json
-            **/yarn.lock
-
-      - name: Verify lockfile exists at root (fail early if not)
-        run: |
-          if [ ! -f package-lock.json ]; then
-            echo "❌ package-lock.json not found at repo root. See debug step above."
-            exit 1
-          fi
-          echo "✅ package-lock.json present at repo root."
+          cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: |
-          npm ci || npm install
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run npm audit (moderate+)
         run: npm audit --audit-level=moderate --json > audit.json || true
