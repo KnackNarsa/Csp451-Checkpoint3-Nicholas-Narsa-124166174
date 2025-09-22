@@ -1,4 +1,4 @@
-import { mkdirSync, copyFileSync, cpSync } from 'fs';
+import { mkdirSync, cpSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
