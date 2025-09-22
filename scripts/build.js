@@ -9,6 +9,6 @@ const dist = resolve(root, 'dist');
 mkdirSync(dist, { recursive: true });
 
 // Copy static files
-cpSync(resolve(root, 'src'), dist, { recursive: true });
+//cpSync(resolve(root, 'src'), dist, { recursive: true });
 
 console.log('Build completed. Output in dist/');
