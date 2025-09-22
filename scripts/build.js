@@ -1,4 +1,4 @@
-import { mkdirSync, copyFileSync, cpSync } from 'fs';
+import { mkdirSync} from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -10,5 +10,5 @@ mkdirSync(dist, { recursive: true });
 
 // Copy static files
 //cpSync(resolve(root, 'src'), dist, { recursive: true });
-
+// import { mkdirSync, copyFileSync, cpSync } from 'fs';
 console.log('Build completed. Output in dist/');
