@@ -32,14 +32,20 @@ jobs:
   quality-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository       
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Debug – show local action folder
+        run: |
+          echo "Repo root: $(pwd)"
+          ls -la .github/actions || true
+          ls -la .github/actions/setup-project || (echo "::error ::.github/actions/setup-project missing"; exit 1)
+          test -f .github/actions/setup-project/action.yml || (echo "::error ::action.yml missing"; exit 1)
 
       - name: Run shared setup project
         uses: ./.github/actions/setup-project
         with:
           node-version: '20'
-
 
 
 
