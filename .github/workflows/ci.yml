@@ -32,10 +32,15 @@ jobs:
   quality-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository       
+        uses: actions/checkout@v4
+
       - name: Run shared setup project
         uses: ./.github/actions/setup-project
         with:
           node-version: '20'
+
+
 
 
   test:
